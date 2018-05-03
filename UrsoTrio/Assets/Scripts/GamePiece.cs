@@ -7,6 +7,8 @@ public class GamePiece : MonoBehaviour {
 	public int xIndex;
 	public int yIndex;
 
+	Board m_board;
+
 	bool m_isMoving = false;
 
 	public InterpType interpolation = InterpType.SmootherStep;
@@ -24,21 +26,25 @@ public class GamePiece : MonoBehaviour {
 	void Start () {
 		
 	}
+
+	public void Init(Board board) {
+		m_board = board;
+	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.RightArrow)) {
-			Move ((int)transform.position.x + 1, (int)transform.position.y, 0.5f);
-		}
-		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-			Move ((int)transform.position.x - 1, (int)transform.position.y, 0.5f);
-		}
-		if (Input.GetKeyDown (KeyCode.UpArrow)) {
-			Move ((int)transform.position.x, (int)transform.position.y + 1, 0.5f);
-		}
-		if (Input.GetKeyDown (KeyCode.DownArrow)) {
-			Move ((int)transform.position.x, (int)transform.position.y - 1, 0.5f);
-		}
+//		if (Input.GetKeyDown (KeyCode.RightArrow)) {
+//			Move ((int)transform.position.x + 1, (int)transform.position.y, 0.5f);
+//		}
+//		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+//			Move ((int)transform.position.x - 1, (int)transform.position.y, 0.5f);
+//		}
+//		if (Input.GetKeyDown (KeyCode.UpArrow)) {
+//			Move ((int)transform.position.x, (int)transform.position.y + 1, 0.5f);
+//		}
+//		if (Input.GetKeyDown (KeyCode.DownArrow)) {
+//			Move ((int)transform.position.x, (int)transform.position.y - 1, 0.5f);
+//		}
 	}
 
 	public void SetCoord(int x, int y) {
@@ -61,8 +67,10 @@ public class GamePiece : MonoBehaviour {
 		while (!reachDestination) {
 			if (Vector3.Distance (transform.position, destination) < 0.01f) {
 				reachDestination = true;
-				transform.position = destination;
-				SetCoord ((int)destination.x, (int)destination.y);
+
+				if(m_board != null){
+					m_board.PlaceGamePiece (this, (int)destination.x,(int)destination.y);
+				}
 				break;
 			}
 
@@ -75,10 +83,10 @@ public class GamePiece : MonoBehaviour {
 				t = Mathf.Clamp(elapsedTime / timeToMove, 0f,1f);
 				break;
 			case InterpType.EaseIn:
-				t = Mathf.Sin (t * Mathf.PI * 0.5f);
+				t = 1 - Mathf.Cos (t * Mathf.PI * 0.5f);
 				break;
 			case InterpType.EaseOut:
-				t = 1 - Mathf.Cos (t * Mathf.PI * 0.5f);
+				t = Mathf.Sin (t * Mathf.PI * 0.5f);
 				break;
 			case InterpType.SmoothStep:
 				t = Mathf.Pow(t,2) * (3 - 2 * t);
