@@ -28,18 +28,15 @@ public class Board : MonoBehaviour {
 		SetupCamera ();
 		FillRandom ();
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	void SetupTiles()
 	{
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
+		for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < height; j++) 
+			{
 				GameObject tile = Instantiate (tilePrefab, new Vector3 (i, j, 0), Quaternion.identity) as GameObject;
-				tile.name = "Title (" + i + "," + i + ")";
+				tile.name = "Title (" + i + "," + j + ")";
 
 				m_allTiles [i, j] = tile.GetComponent<Tile> ();
 				tile.transform.parent = transform;
@@ -70,30 +67,38 @@ public class Board : MonoBehaviour {
 		return gamePiecePrefabs [randomIdx];
 	}
 
-	public void PlaceGamePiece(GamePiece gamePiece, int x, int y){
-		if (gamePiece == null) {
+	public void PlaceGamePiece(GamePiece gamePiece, int x, int y)
+	{
+		if (gamePiece == null) 
+		{
 			Debug.LogWarning ("Invalid GamePiece!");
 			return;
 		}
 
 		gamePiece.transform.position = new Vector3 (x, y, 0);
 		gamePiece.transform.rotation = Quaternion.identity;
-		if (IsWithinBounds (x,y)) {
+		if (IsWithinBounds (x,y))
+		{
 			m_allGamePieces [x, y] = gamePiece;
 		}
 		gamePiece.SetCoord (x, y);
 	}
 
-	bool IsWithinBounds(int x, int y) {
+	bool IsWithinBounds(int x, int y)
+	{
 		return (x >= 0 && x < width && y >= 0 && y < height);
 	}
 
-	void FillRandom(){
-		for (int i = 0; i < width; i++) {
-			for (int j = 0; j < height; j++) {
+	void FillRandom()
+	{
+		for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < height; j++)
+			{
 				GameObject randomPiece = Instantiate (GetRandomGamePiece (), Vector3.zero, Quaternion.identity) as GameObject;
 
-				if (randomPiece != null) {
+				if (randomPiece != null) 
+				{
 					randomPiece.GetComponent<GamePiece> ().Init (this);
 					PlaceGamePiece (randomPiece.GetComponent<GamePiece> (), i, j);
 					randomPiece.transform.parent = transform;
@@ -104,8 +109,10 @@ public class Board : MonoBehaviour {
 	#endregion
 
 	#region Tile Methods
-	public void ClickTile(Tile tile){
-		if (m_clickedTile == null) {
+	public void ClickTile(Tile tile)
+	{
+		if (m_clickedTile == null) 
+		{
 			m_clickedTile = tile;
 //			Debug.Log ("Clicked tile: " + tile.name);
 		}
@@ -113,17 +120,18 @@ public class Board : MonoBehaviour {
 
 	public void DragToTile(Tile tile)
 	{
-		if (m_clickedTile != null && IsNextTo (tile, m_clickedTile)) {
+		if (m_clickedTile != null && IsNextTo (tile, m_clickedTile))
+		{
 			m_targetTile = tile;
 		}
 	}
 
 	public void ReleaseTile() {
-		if (m_clickedTile != null && m_targetTile != null) {
+		if (m_clickedTile != null && m_targetTile != null)
+		{
 			Debug.Log ("Clicked Tile: " + m_clickedTile.name + " | Target Tile: " + m_targetTile.name);
 			SwitchTiles (m_clickedTile, m_targetTile);
-			Debug.Log ("Clicked Tile: " + m_clickedTile.name + " | Target Tile: " + m_targetTile.name);
-//			Debug.Log ("Tiles switched!");
+			Debug.Log ("Tiles switched!");
 		}
 
 		m_clickedTile = null;
@@ -140,15 +148,73 @@ public class Board : MonoBehaviour {
 	}
 
 	bool IsNextTo(Tile start, Tile end) {
-		if(Mathf.Abs (start.xIndex - end.xIndex) == 1 && start.yIndex == end.yIndex) {
+		if(Mathf.Abs (start.xIndex - end.xIndex) == 1 && start.yIndex == end.yIndex)
+		{
 			return true;
 		}
 
-		if(Mathf.Abs (start.yIndex - end.yIndex) == 1 && start.xIndex == end.xIndex) {
+		if(Mathf.Abs (start.yIndex - end.yIndex) == 1 && start.xIndex == end.xIndex)
+		{
 			return true;
 		}
 
 		return false;
 	}
+	#endregion
+
+	#region Match Methods
+	List<GamePiece> FindMatches(int startX, int startY, Vector2 searchDirection, int minLength = 3)
+	{
+		List<GamePiece> matches = new List<GamePiece> ();
+		GamePiece startPiece = null;
+		if(IsWithinBounds (startX,startY))
+		{
+			startPiece = m_allGamePieces [startX, startY];
+		}
+		if(startPiece != null)
+		{
+			matches.Add (startPiece);
+		}
+		else
+		{
+			return null;
+		}
+
+		int nextX;
+		int nextY;
+
+		int maxValue = (width > height) ? width : height;
+
+		for (int i = 0; i < maxValue - 1; i++) {
+			nextX = startX + (int)Mathf.Clamp (searchDirection.x, -1, 1) * i;
+			nextY = startY + (int)Mathf.Clamp (searchDirection.y, -1, 1) * i;
+
+			if(!IsWithinBounds (nextX,nextY))
+			{
+				break;
+			}
+
+			GamePiece nextPiece = m_allGamePieces [nextX, nextY];
+
+			if (nextPiece.matchValue == startPiece.matchValue && !matches.Contains(nextPiece)) {
+				matches.Add (nextPiece);
+			}
+			else
+			{
+				break;
+			}
+		}
+
+		if (matches.Count >= minLength)
+		{
+			return matches;
+		}
+
+		return null;
+	}
+
+	void FindVerticalMatches() {}
+
+	void FindHorizontalMatxhes() {}
 	#endregion
 }

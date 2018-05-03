@@ -13,11 +13,6 @@ public class Tile : MonoBehaviour {
 	void Start () {
 		
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	public void Init(int x, int y, Board board) {
 		xIndex = x;
