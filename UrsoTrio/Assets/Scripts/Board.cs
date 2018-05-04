@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Board : MonoBehaviour {
@@ -27,6 +28,7 @@ public class Board : MonoBehaviour {
 		SetupTiles ();
 		SetupCamera ();
 		FillRandom ();
+		HighlightMatches ();
 	}
 
 	void SetupTiles()
@@ -196,7 +198,7 @@ public class Board : MonoBehaviour {
 
 			GamePiece nextPiece = m_allGamePieces [nextX, nextY];
 
-			if (nextPiece.matchValue == startPiece.matchValue && !matches.Contains(nextPiece)) {
+			if (nextPiece.matchValue == startPiece.matchValue /*&& !matches.Contains(nextPiece)*/) {
 				matches.Add (nextPiece);
 			}
 			else
@@ -213,8 +215,89 @@ public class Board : MonoBehaviour {
 		return null;
 	}
 
-	void FindVerticalMatches() {}
+	List<GamePiece> FindVerticalMatches(int startX, int startY, int minLength = 3) 
+	{
+		List<GamePiece> upwardMatches = FindMatches (startX, startY, new Vector2 (0, 1), 2);
+		List<GamePiece> downwardMatches = FindMatches (startX, startY, new Vector2 (0, -1), 2);
 
-	void FindHorizontalMatxhes() {}
+		if(upwardMatches == null)
+		{
+			upwardMatches = new List<GamePiece> ();
+		}
+		if( downwardMatches == null)
+		{
+			downwardMatches  = new List<GamePiece> ();
+		}
+		foreach (var piece in downwardMatches) 
+		{
+			if(!upwardMatches.Contains (piece))
+			{
+				upwardMatches.Add (piece);
+			}
+		}
+
+		var combinedMatches = upwardMatches.Union (downwardMatches).ToList();
+
+		return (combinedMatches.Count >= minLength) ? combinedMatches : null;
+	}
+
+	List<GamePiece> FindHorizontalMatxhes(int startX, int startY, int minLength = 3) 
+	{
+		List<GamePiece> rightMatches = FindMatches (startX, startY, new Vector2 (1, 0), 2);
+		List<GamePiece> leftMatches = FindMatches (startX, startY, new Vector2 (-1, 0), 2);
+
+		if(rightMatches == null)
+		{
+			rightMatches = new List<GamePiece> ();
+		}
+		if( leftMatches == null)
+		{
+			leftMatches  = new List<GamePiece> ();
+		}
+		foreach (var piece in leftMatches) 
+		{
+			if(!rightMatches.Contains (piece))
+			{
+				rightMatches.Add (piece);
+			}
+		}
+
+		var combinedMatches = rightMatches.Union (leftMatches).ToList();
+
+		return (combinedMatches.Count >= minLength) ? combinedMatches : null;
+	}
+
+	void HighlightMatches()
+	{
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				SpriteRenderer spriteRenderer = m_allTiles [i, j].GetComponent<SpriteRenderer> ();
+				spriteRenderer.color = new Color (spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0);
+
+				List<GamePiece> horizMatches = FindHorizontalMatxhes (i, j, 3);
+				List<GamePiece> vertMatches = FindVerticalMatches (i, j, 3);
+
+				if(horizMatches == null)
+				{
+					horizMatches = new List<GamePiece> ();
+				}
+				if(vertMatches == null)
+				{
+					vertMatches = new List<GamePiece> ();
+				}
+
+				var combineMatches = horizMatches.Union (vertMatches).ToList ();
+
+				if(combineMatches.Count > 0)
+				{
+					foreach (GamePiece piece in combineMatches) 
+					{
+						spriteRenderer = m_allTiles [piece.xIndex, piece.yIndex].GetComponent<SpriteRenderer> ();
+						spriteRenderer.color = piece.GetComponent<SpriteRenderer> ().color;
+					}
+				}
+			}
+		}
+	}
 	#endregion
 }

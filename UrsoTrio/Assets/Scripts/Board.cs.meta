@@ -6,8 +6,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - tilePrefab: {fileID: 1086378825420562, guid: 0a8144937b5b64d16a7c7b6c142063fb,
-      type: 2}
+  - tilePrefab: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
