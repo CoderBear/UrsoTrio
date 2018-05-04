@@ -176,11 +176,12 @@ public class Board : MonoBehaviour {
 				clickedPiece.Move (clickedTile.xIndex, clickedTile.yIndex, swapTime);
 				targetPiece.Move (targetTile.xIndex, targetTile.yIndex, swapTime);
 			}
-
-			yield return new WaitForSeconds (swapTime);
-			
-			HighlightMatchesAt (clickedTile.xIndex, clickedTile.yIndex);
-			HighlightMatchesAt (targetTile.xIndex, targetTile.yIndex);
+			else
+			{
+				yield return new WaitForSeconds (swapTime);
+				ClearPieceAt (clickedPieceMatches);
+				ClearPieceAt (targetPieceMatches);
+			}
 		}
 	}
 
@@ -243,14 +244,20 @@ public class Board : MonoBehaviour {
 
 			GamePiece nextPiece = m_allGamePieces[nextX, nextY];
 
-			if (nextPiece.matchValue == startPiece.matchValue && !matches.Contains(nextPiece))
-			{
-				matches.Add(nextPiece);
-			}
-
-			else
+			if (nextPiece == null) 
 			{
 				break;
+			} 
+			else 
+			{
+				if (nextPiece.matchValue == startPiece.matchValue && !matches.Contains (nextPiece))
+				{
+					matches.Add (nextPiece);
+				} 
+				else 
+				{
+					break;
+				}
 			}
 		}
 
@@ -357,6 +364,36 @@ public class Board : MonoBehaviour {
 			{
 				HighlightMatchesAt (i,j);
 			}
+		}
+	}
+
+	void ClearPieceAt(int x, int y)
+	{
+		GamePiece pieceToClear = m_allGamePieces [x, y];
+
+		if (pieceToClear != null)
+		{
+			m_allGamePieces [x, y] = null;
+			Destroy ((pieceToClear.gameObject));
+		}
+		HighlightTileOff (x, y);
+	}
+
+	void ClearBoard()
+	{
+		for (int i = 0; i < width; i++)
+		{
+			for (int j = 0; j < height; j++)
+			{
+				ClearPieceAt (i,j);
+			}
+		}
+	}
+
+	void ClearPieceAt(List<GamePiece> gamePieces)
+	{
+		foreach (GamePiece piece in gamePieces) {
+			ClearPieceAt (piece.xIndex, piece.yIndex);
 		}
 	}
 	#endregion
