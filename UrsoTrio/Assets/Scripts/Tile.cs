@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 public class Tile : MonoBehaviour {
 
@@ -10,36 +9,43 @@ public class Tile : MonoBehaviour {
 	Board m_board;
 
 	// Use this for initialization
-	void Start () {
-		
+	void Start () 
+	{
+	
 	}
 
-	public void Init(int x, int y, Board board) {
+	public void Init(int x, int y, Board board)
+	{
 		xIndex = x;
 		yIndex = y;
 		m_board = board;
+
 	}
 
-	#region Mouse Methods
 	void OnMouseDown()
 	{
-		if (m_board != null) {
-			m_board.ClickTile (this);
+		if (m_board !=null)
+		{
+			m_board.ClickTile(this);
 		}
+
 	}
 
 	void OnMouseEnter()
 	{
-		if (m_board != null) {
-			m_board.DragToTile (this);
+		if (m_board !=null)
+		{
+			m_board.DragToTile(this);
 		}
+
 	}
 
 	void OnMouseUp()
 	{
-		if (m_board != null) {
-			m_board.ReleaseTile ();
+		if (m_board !=null)
+		{
+			m_board.ReleaseTile();
 		}
+
 	}
-	#endregion
 }
