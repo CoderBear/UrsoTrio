@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: b5a1e736ce5f54dedac8f98da8d5a847
+timeCreated: 1525737138
+licenseType: Free
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - clearFXPrefab: {fileID: 1000010615010014, guid: 26aee7c85d41c4b7d81597b755af0cb5,
+      type: 2}
+  - breakFXPrefab: {fileID: 1000013032388978, guid: a024f70758ac645d7820a0060cf0e472,
+      type: 2}
+  - doubleBreakFXPrefab: {fileID: 1000013940112220, guid: ea2b0f038afc64b4cbcd3fe1537a167d,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

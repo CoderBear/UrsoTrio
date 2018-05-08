@@ -25,6 +25,9 @@ public class Board : MonoBehaviour {
 	bool m_playerInputEnabled = true;
 
 	public StartingTile[] startingTiles;
+
+	ParticleManager m_particleManager;
+
 	[System.Serializable]
 	public class StartingTile
 	{
@@ -42,11 +45,13 @@ public class Board : MonoBehaviour {
 		SetupTiles();
 		SetupCamera();
 		FillBoard(10, 0.5f);
+		m_particleManager = GameObject.FindWithTag ("ParticleManager").GetComponent<ParticleManager> ();
 	}
 
 	void MakeTile (GameObject prefab, int x, int y, int z = 0)
 	{
-		if (prefab != null) {
+		if (prefab != null) 
+		{
 			GameObject tile = Instantiate (prefab, new Vector3 (x, y, 0), Quaternion.identity) as GameObject;
 			tile.name = "Tile (" + x + "," + y + ")";
 			m_allTiles [x, y] = tile.GetComponent<Tile> ();
@@ -57,8 +62,10 @@ public class Board : MonoBehaviour {
 	
 	void SetupTiles()
 	{
-		foreach(StartingTile sTile in startingTiles) {
-			if (sTile != null) {
+		foreach(StartingTile sTile in startingTiles)
+		{
+			if (sTile != null)
+			{
 				MakeTile (sTile.tilePrefab, sTile.x, sTile.y, sTile.z);
 			}
 		}
@@ -67,7 +74,8 @@ public class Board : MonoBehaviour {
 		{
 			for (int j = 0; j < height; j++)
 			{
-				if (m_allTiles[i,j] == null) {
+				if (m_allTiles[i,j] == null)
+				{
 					MakeTile (tileNormalPrefab, i, j);
 				}
 			}
@@ -127,7 +135,8 @@ public class Board : MonoBehaviour {
 	GamePiece FillRandomAt (int x, int y, int falseYOffset = 0, float moveTime = 0.1f)
 	{
 		GameObject randomPiece = Instantiate (GetRandomGamePiece (), Vector3.zero, Quaternion.identity) as GameObject;
-		if (randomPiece != null) {
+		if (randomPiece != null) 
+		{
 			randomPiece.GetComponent<GamePiece> ().Init (this);
 			PlaceGamePiece (randomPiece.GetComponent<GamePiece> (), x, y);
 
@@ -159,12 +168,12 @@ public class Board : MonoBehaviour {
 					while (HasMatchOnFill (i, j)) 
 					{
 						ClearPieceAt (i, j);
-						piece = FillRandomAt (i, j);
+						piece = FillRandomAt (i, j, falseYOffset, moveTime);
 						iterations++;
 					
 						if (iterations >= maxIterations)
 						{
-							Debug.Log ("Break ==================");
+//							Debug.Log ("Break ==================");
 							break;
 						}
 					}
@@ -213,8 +222,7 @@ public class Board : MonoBehaviour {
 		{
 			SwitchTiles(m_clickedTile, m_targetTile);
 		}
-
-
+			
 		m_clickedTile = null;
 		m_targetTile = null;
 	}
@@ -231,7 +239,8 @@ public class Board : MonoBehaviour {
 			GamePiece clickedPiece = m_allGamePieces [clickedTile.xIndex, clickedTile.yIndex];
 			GamePiece targetPiece = m_allGamePieces [targetTile.xIndex, targetTile.yIndex];
 			
-			if (targetPiece != null && clickedPiece != null) {
+			if (targetPiece != null && clickedPiece != null) 
+			{
 				clickedPiece.Move (targetTile.xIndex, targetTile.yIndex, swapTime);
 				targetPiece.Move (clickedTile.xIndex, clickedTile.yIndex, swapTime);
 				
@@ -240,10 +249,13 @@ public class Board : MonoBehaviour {
 				List<GamePiece> clickedPieceMatches = FindMatchesAt (clickedTile.xIndex, clickedTile.yIndex);
 				List<GamePiece> targetPieceMatches = FindMatchesAt (targetTile.xIndex, targetTile.yIndex);
 				
-				if (targetPieceMatches.Count == 0 && clickedPieceMatches.Count == 0) {
+				if (targetPieceMatches.Count == 0 && clickedPieceMatches.Count == 0)
+				{
 					clickedPiece.Move (clickedTile.xIndex, clickedTile.yIndex, swapTime);
 					targetPiece.Move (targetTile.xIndex, targetTile.yIndex, swapTime);
-				} else {
+				}
+				else 
+				{
 					yield return new WaitForSeconds (swapTime);
 			
 					ClearAndRefillBoard (clickedPieceMatches.Union (targetPieceMatches).ToList ());
@@ -425,7 +437,8 @@ public class Board : MonoBehaviour {
 
 	void HighlightTileOff(int x, int y) 
 	{
-		if (m_allTiles[x,y].tileType != TileType.Breakable) {
+		if (m_allTiles[x,y].tileType != TileType.Breakable)
+		{
 			SpriteRenderer spriteRenderer = m_allTiles [x, y].GetComponent<SpriteRenderer> ();
 			spriteRenderer.color = new Color (spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 0);
 		}
@@ -433,7 +446,8 @@ public class Board : MonoBehaviour {
 
 	void HighlightTileOn(int x, int y, Color col)
 	{
-		if (m_allTiles[x,y].tileType != TileType.Breakable) {
+		if (m_allTiles[x,y].tileType != TileType.Breakable)
+		{
 			SpriteRenderer spriteRenderer = m_allTiles [x, y].GetComponent<SpriteRenderer> ();
 			spriteRenderer.color = col;
 		}
@@ -602,7 +616,8 @@ public class Board : MonoBehaviour {
 		m_playerInputEnabled = false;
 		List<GamePiece> matches = gamePieces;
 
-		do {
+		do 
+		{
 			yield return StartCoroutine (ClearAndCollapseRoutine (matches));
 			yield return null;
 			
