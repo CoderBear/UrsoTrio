@@ -148,4 +148,22 @@ public class GamePiece : MonoBehaviour {
 
 	}
 
+	public void ChangeColor(GamePiece pieceToMatch)
+	{
+		SpriteRenderer rendererToChange = GetComponent<SpriteRenderer> ();
+
+		Color colorToMatch = Color.clear;
+
+		if(pieceToMatch != null)
+		{
+			SpriteRenderer rendererToMatch = pieceToMatch.GetComponent<SpriteRenderer> ();
+
+			if(rendererToMatch != null && rendererToChange != null)
+			{
+				rendererToChange.color = rendererToMatch.color;
+			}
+
+			matchValue = pieceToMatch.matchValue;
+		}
+	}
 }
