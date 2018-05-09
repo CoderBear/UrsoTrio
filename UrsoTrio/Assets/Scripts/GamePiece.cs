@@ -1,6 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum MatchValue
+{
+	Yellow,
+	Blue,
+	Magenta,
+	Indigo,
+	Green,
+	Teal,
+	Red,
+	Cyan,
+	Wild
+}
+
 public class GamePiece : MonoBehaviour {
 
 	public int xIndex;
@@ -22,20 +35,6 @@ public class GamePiece : MonoBehaviour {
 	};
 
 	public MatchValue matchValue;
-
-	public enum MatchValue
-	{
-		Yellow,
-		Blue,
-		Magenta,
-		Indigo,
-		Green,
-		Teal,
-		Red,
-		Cyan,
-		Wild
-	}
-
 
 	// Use this for initialization
 	void Start () 
@@ -76,13 +75,11 @@ public class GamePiece : MonoBehaviour {
 	public void Move (int destX, int destY, float timeToMove)
 	{
 
-		if (!m_isMoving)
-		{
+		if (!m_isMoving) {
 
-			StartCoroutine(MoveRoutine(new Vector3(destX, destY,0), timeToMove));	
+			StartCoroutine (MoveRoutine (new Vector3 (destX, destY, 0), timeToMove));	
 		}
 	}
-
 
 	IEnumerator MoveRoutine(Vector3 destination, float timeToMove)
 	{
