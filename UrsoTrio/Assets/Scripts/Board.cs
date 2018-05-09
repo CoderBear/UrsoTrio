@@ -14,6 +14,13 @@ public class Board : MonoBehaviour {
 	public GameObject tileObstaclePrefab;
 	public GameObject[] gamePiecePrefabs;
 
+	public GameObject columnBombPrefab;
+	public GameObject rowBombPrefab;
+	public GameObject adjacentBombPrefab;
+
+	GameObject m_clickedTileBomb;
+	GameObject m_targetTileBomb;
+
 	public float swapTime = 0.5f;
 
 	Tile[,] m_allTiles;
@@ -89,6 +96,19 @@ public class Board : MonoBehaviour {
 			}
 			prefab.transform.parent = transform;
 		}
+	}
+
+	GameObject MakeBomb(GameObject prefab, int x, int y)
+	{
+		if(prefab != null && IsWithinBounds(x, y))
+		{
+			GameObject bomb = Instantiate (prefab, new Vector3 (x, y, 0), Quaternion.identity) as GameObject;
+			bomb.GetComponent<Bomb> ().Init (this);
+			bomb.GetComponent<Bomb> ().SetCoord (x, y);
+			bomb.transform.parent = transform;
+			return bomb;
+		}
+		return null;
 	}
 	
 	void SetupTiles()
@@ -291,7 +311,9 @@ public class Board : MonoBehaviour {
 				else 
 				{
 					yield return new WaitForSeconds (swapTime);
-			
+					Vector2 swapDirection = new Vector2 (targetTile.xIndex - clickedTile.xIndex, targetTile.yIndex - clickedTile.yIndex);
+					m_clickedTileBomb = DropBomb (clickedTile.xIndex, clickedTile.yIndex, swapDirection, clickedPieceMatches);
+					m_targetTileBomb = DropBomb (targetTile.xIndex, targetTile.yIndex, swapDirection, targetPieceMatches);
 					ClearAndRefillBoard (clickedPieceMatches.Union (targetPieceMatches).ToList ());
 				}
 			}
@@ -695,7 +717,19 @@ public class Board : MonoBehaviour {
 			gamePieces = gamePieces.Union (bombedPieces).ToList ();
 
 			ClearPieceAt (gamePieces);
-			BreakTileAt (gamePieces); 
+			BreakTileAt (gamePieces);
+
+			if(m_clickedTileBomb != null)
+			{
+				ActivateBomb (m_clickedTileBomb);
+				m_clickedTileBomb = null;
+			}
+
+			if(m_targetTileBomb != null)
+			{
+				ActivateBomb (m_targetTileBomb);
+				m_targetTileBomb = null;
+			}
 
 			yield return new WaitForSeconds (0.25f);
 
@@ -820,6 +854,82 @@ public class Board : MonoBehaviour {
 		}
 		return allPiecesToClear;
 	}
-	#endregion
 
+	bool IsCornerMatch(List<GamePiece> gamePieces)
+	{
+		bool vertical = false;
+		bool horizontal = false;
+		int xStart = -1;
+		int yStart = -1;
+
+		foreach (GamePiece piece in gamePieces)
+		{
+			if(piece != null)
+			{
+				if(xStart == -1 || yStart == -1)
+				{
+					xStart = piece.xIndex;
+					yStart = piece.yIndex;
+				}
+
+				if(piece.xIndex != xStart && piece.yIndex == yStart)
+				{
+					horizontal = true;
+				}
+				if(piece.xIndex == xStart && piece.yIndex != yStart)
+				{
+					vertical = true;
+				}
+			}
+		}
+		return (horizontal && vertical);
+	}
+
+	GameObject DropBomb(int x, int y, Vector2 swapDirection, List<GamePiece> gamepieces)
+	{
+		GameObject bomb = null;
+
+		if(gamepieces.Count >= 4)
+		{
+			if(IsCornerMatch(gamepieces))
+			{
+				if (adjacentBombPrefab != null)
+				{
+					bomb = MakeBomb (adjacentBombPrefab, x, y);
+				}
+			}
+			else
+			{
+				// row bomb
+				if(swapDirection.x != 0)
+				{
+					if(rowBombPrefab != null)
+					{
+						bomb = MakeBomb (rowBombPrefab, x, y);
+					}
+				}
+				// column bomb
+				else
+				{
+					if(columnBombPrefab != null)
+					{
+						bomb = MakeBomb (columnBombPrefab, x, y);
+					}
+				}
+			}
+		}
+		return bomb;
+	}
+
+	void ActivateBomb(GameObject bomb)
+	{
+		int x = (int)bomb.transform.position.x;
+		int y = (int)bomb.transform.position.y;
+
+		if(IsWithinBounds(x,y))
+		{
+			m_allGamePieces [x, y] = bomb.GetComponent<GamePiece> ();
+		}
+	}
+	#endregion
 }
