@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum BombType
 {
-	Non,
+	None,
 	Column,
 	Row,
 	Adajcent,
