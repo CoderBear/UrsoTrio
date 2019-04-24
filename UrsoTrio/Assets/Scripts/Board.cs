@@ -72,6 +72,11 @@ public class Board : MonoBehaviour {
 		m_allTiles = new Tile[width,height];
 		m_allGamePieces = new GamePiece[width,height];
 
+		m_particleManager = GameObject.FindWithTag ("ParticleManager").GetComponent<ParticleManager> ();
+	}
+
+	public void SetupBoard()
+	{
 		SetupTiles();
 		SetupGamePieces ();
 
@@ -79,7 +84,6 @@ public class Board : MonoBehaviour {
 		collectibleCount = startingCollectibles.Count;
 		SetupCamera();
 		FillBoard(fillYOffset, fillMoveTime);
-		m_particleManager = GameObject.FindWithTag ("ParticleManager").GetComponent<ParticleManager> ();
 	}
 
 	void MakeTile (GameObject prefab, int x, int y, int z = 0)
@@ -374,6 +378,11 @@ public class Board : MonoBehaviour {
 				}
 				else 
 				{
+					if(GameManager.Instance != null)
+					{
+						GameManager.Instance.movesLeft--;
+						GameManager.Instance.UpdateMoves();
+					}
 					yield return new WaitForSeconds (swapTime);
 					Vector2 swapDirection = new Vector2 (targetTile.xIndex - clickedTile.xIndex, targetTile.yIndex - clickedTile.yIndex);
 					m_clickedTileBomb = DropBomb (clickedTile.xIndex, clickedTile.yIndex, swapDirection, clickedPieceMatches);

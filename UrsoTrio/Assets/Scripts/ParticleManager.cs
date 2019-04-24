@@ -38,7 +38,7 @@ public class ParticleManager : MonoBehaviour {
 		}
 		else
 		{
-			if(breakableValue != null)
+			if(breakFXPrefab != null)
 			{
 				breakFX = Instantiate (breakFXPrefab, new Vector3 (x, y, z), Quaternion.identity) as GameObject;
 			}
