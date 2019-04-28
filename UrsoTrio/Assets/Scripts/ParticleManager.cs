@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
-public class ParticleManager : MonoBehaviour {
+public class ParticleManager : MonoBehaviour
+{
 
 	public GameObject clearFXPrefab;
 	public GameObject breakFXPrefab;
@@ -11,61 +11,66 @@ public class ParticleManager : MonoBehaviour {
 
 	public void ClearPieceFXAt(int x, int y, int z = 0)
 	{
-		if(clearFXPrefab != null)
+		if (clearFXPrefab != null)
 		{
-			GameObject clearFX = Instantiate (clearFXPrefab, new Vector3 (x, y, z), Quaternion.identity) as GameObject;
+			GameObject clearFX = Instantiate(clearFXPrefab, new Vector3(x,y,z), Quaternion.identity) as GameObject;
 
-			ParticlePlayer particlePlayer = clearFX.GetComponent<ParticlePlayer> ();
+			ParticlePlayer particlePlayer = clearFX.GetComponent<ParticlePlayer>();
 
-			if(particlePlayer != null)
+			if (particlePlayer !=null)
 			{
-				particlePlayer.Play ();
+				particlePlayer.Play();
 			}
 		}
 	}
 
-	public void BrakeTileFXAt(int breakableValue, int x, int y, int z = 0)
+	public void BreakTileFXAt(int breakableValue, int x, int y, int z = 0)
 	{
 		GameObject breakFX = null;
 		ParticlePlayer particlePlayer = null;
 
-		if(breakableValue > 1)
+		if (breakableValue > 1)
 		{
-			if(doubleBreakFXPrefab != null)
+			if (doubleBreakFXPrefab !=null)
 			{
-				breakFX = Instantiate (doubleBreakFXPrefab, new Vector3 (x, y, z), Quaternion.identity) as GameObject;
+				breakFX = Instantiate(doubleBreakFXPrefab, new Vector3(x,y,z), Quaternion.identity) as GameObject;
 			}
 		}
 		else
 		{
-			if(breakFXPrefab != null)
+			if (breakFXPrefab !=null)
 			{
-				breakFX = Instantiate (breakFXPrefab, new Vector3 (x, y, z), Quaternion.identity) as GameObject;
+				breakFX = Instantiate(breakFXPrefab, new Vector3(x,y,z), Quaternion.identity) as GameObject;
+
 			}
 		}
 
-		if(breakFX != null)
+		if (breakFX !=null)
 		{
-			particlePlayer = breakFX.GetComponent<ParticlePlayer> ();
+			particlePlayer = breakFX.GetComponent<ParticlePlayer>();
 
-			if(particlePlayer != null)
+			if (particlePlayer !=null)
 			{
-				particlePlayer.Play ();
+				particlePlayer.Play();
 			}
 		}
+
+
+
+
 	}
 
-	public void BombFXAt(int x, int y, int z = 0) 
+	public void BombFXAt(int x, int y, int z = 0)
 	{
-		if(bombFXPrefab != null)
+		if (bombFXPrefab !=null)
 		{
-			GameObject bombFX = Instantiate (bombFXPrefab, new Vector3 (x, y, z), Quaternion.identity) as GameObject;
-			ParticlePlayer particlePlayer = bombFX.GetComponent<ParticlePlayer> ();
-
-			if(particlePlayer != null)
+			GameObject bombFX = Instantiate(bombFXPrefab, new Vector3(x, y, z), Quaternion.identity) as GameObject;
+			ParticlePlayer particlePlayer = bombFX.GetComponent<ParticlePlayer>();
+			if (particlePlayer !=null)
 			{
-				particlePlayer.Play ();
+				particlePlayer.Play();
 			}
 		}
 	}
+
 }

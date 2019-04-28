@@ -7,7 +7,7 @@ public enum BombType
 	None,
 	Column,
 	Row,
-	Adajcent,
+	Adjacent,
 	Color
 }
 
