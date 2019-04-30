@@ -26,7 +26,7 @@ public class SoundManager : Singleton<SoundManager>
     }
 
 #region Methods
-    public AudioSource PlayClipAtPoint(AudioClip clip, Vector3 position, float volume = 1f)
+    public AudioSource PlayClipAtPoint(AudioClip clip, Vector3 position, float volume = 1f, bool randomizePitch = true)
     {
         if(clip != null)
         {
@@ -36,8 +36,11 @@ public class SoundManager : Singleton<SoundManager>
             AudioSource source = go.AddComponent<AudioSource>();
             source.clip = clip;
 
-            float randomPitch = Random.Range(lowPitch, highPitch);
-            source.pitch = randomPitch;
+            if(randomizePitch)
+            {
+                float randomPitch = Random.Range(lowPitch, highPitch);
+                source.pitch = randomPitch;
+            }
 
             source.volume = volume;
 
