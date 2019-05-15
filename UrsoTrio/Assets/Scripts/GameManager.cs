@@ -75,7 +75,7 @@ public class GameManager : Singleton<GameManager>
             if (m_levelGoalCollected != null)
             {
                 UIManager.Instance.EnableCollectionGoalLayout(true);
-                UIManager.Instance.SetupCollectionGoalLayout(m_levelGoalCollected.collectGoals);
+                UIManager.Instance.SetupCollectionGoalLayout(m_levelGoalCollected.collectionGoals);
             }
             else
             {
@@ -165,7 +165,7 @@ public class GameManager : Singleton<GameManager>
 
                     if (goalLayout != null)
                     {
-                        UIManager.Instance.SetupCollectionGoalLayout(m_levelGoalCollected.collectGoals, goalLayout, 80);
+                        UIManager.Instance.SetupCollectionGoalLayout(m_levelGoalCollected.collectionGoals, goalLayout, 80);
                     }
                 }
                 else
