@@ -53,7 +53,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Blocker.cs" />
      <Compile Include="Assets\Scripts\Board.cs" />
+     <Compile Include="Assets\Scripts\Board\BoardBomber.cs" />
+     <Compile Include="Assets\Scripts\Board\BoardClearer.cs" />
+     <Compile Include="Assets\Scripts\Board\BoardCollapser.cs" />
+     <Compile Include="Assets\Scripts\Board\BoardFiller.cs" />
+     <Compile Include="Assets\Scripts\Board\BoardHighlighter.cs" />
+     <Compile Include="Assets\Scripts\Board\BoardInput.cs" />
+     <Compile Include="Assets\Scripts\Board\BoardMatcher.cs" />
+     <Compile Include="Assets\Scripts\Board\BoardQuery.cs" />
+     <Compile Include="Assets\Scripts\Board\BoardSetup.cs" />
+     <Compile Include="Assets\Scripts\Board\BoardTiles.cs" />
      <Compile Include="Assets\Scripts\BoardDeadlock.cs" />
      <Compile Include="Assets\Scripts\BoardShuffler.cs" />
      <Compile Include="Assets\Scripts\Bomb.cs" />

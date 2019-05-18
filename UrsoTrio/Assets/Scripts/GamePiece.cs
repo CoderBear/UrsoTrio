@@ -11,6 +11,8 @@ public enum MatchValue
 	Teal,
 	Red,
 	Cyan,
+	Purple,
+	Orange,
 	Wild,
 	None
 }
@@ -40,31 +42,6 @@ public class GamePiece : MonoBehaviour {
 
 	public int scoreValue = 20;
 	public AudioClip clearSound;
-
-	// Use this for initialization
-	void Start () 
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update () 
-	{
-		/*
-		if (Input.GetKeyDown(KeyCode.RightArrow))
-		{
-			Move((int)transform.position.x + 2, (int) transform.position.y, 0.5f);
-
-		}
-
-		if (Input.GetKeyDown(KeyCode.LeftArrow))
-		{
-			Move((int)transform.position.x - 2, (int) transform.position.y, 0.5f);
-
-		}
-		*/
-
-	}
 
 	public void Init(Board board)
 	{
@@ -107,7 +84,7 @@ public class GamePiece : MonoBehaviour {
 
 				if (m_board !=null)
 				{
-					m_board.PlaceGamePiece(this, (int) destination.x, (int) destination.y);
+					m_board.boardFiller.PlaceGamePiece(this, (int) destination.x, (int) destination.y);
 
 				}
 
@@ -146,8 +123,6 @@ public class GamePiece : MonoBehaviour {
 		}
 
 		m_isMoving = false;
-
-
 	}
 
 	public void ChangeColor(GamePiece pieceToMatch)

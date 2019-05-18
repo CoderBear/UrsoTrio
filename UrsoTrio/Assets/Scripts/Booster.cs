@@ -160,7 +160,7 @@ public class Booster : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
     {
         if(m_board != null && m_TileTarget != null)
         {
-            m_board.ClearAndRefillBoard(m_TileTarget.xIndex, m_TileTarget.yIndex);
+            m_board.boardClearer.ClearAndRefillBoard(m_TileTarget.xIndex, m_TileTarget.yIndex);
         }
     }
 
@@ -176,7 +176,7 @@ public class Booster : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
     {
         if(m_board != null && m_TileTarget != null)
         {
-            m_board.MakeColorBombBooster(m_TileTarget.xIndex, m_TileTarget.yIndex);
+            m_board.boardFiller.MakeColorBombBooster(m_TileTarget.xIndex, m_TileTarget.yIndex);
         }
     }
 }

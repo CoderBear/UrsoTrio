@@ -52,6 +52,34 @@ public class BoardShuffler : MonoBehaviour
         }
     }
 
+    public IEnumerator ShuffleBoardRoutine(Board board)
+    {
+        if(board != null)
+        {
+            List<GamePiece> allPieces = new List<GamePiece>();
+            foreach(GamePiece piece in board.allGamePieces)
+            {
+                allPieces.Add(piece);
+            }
+
+            while(!board.boardQuery.IsCollapsed(allPieces))
+            {
+                yield return null;
+            }
+
+            List<GamePiece> normalPieces = RemoveNormalPieces(board.allGamePieces);
+
+            board.boardShuffler.ShuffleList(normalPieces);
+
+            board.boardFiller.FillBoardFromList(normalPieces);
+
+            MovePieces(board.allGamePieces, board.swapTime);
+
+            List<GamePiece> matches = board.boardMatcher.FindAllMatches();
+            StartCoroutine(board.ClearAndRefillBoardRoutine(matches));
+        }
+    }
+
     public void MovePieces(GamePiece[,] allPieces, float swapTime = 0.5f)
     {
         int width = allPieces.GetLength(0);
@@ -68,5 +96,4 @@ public class BoardShuffler : MonoBehaviour
             }
         } 
     }
-
 }
