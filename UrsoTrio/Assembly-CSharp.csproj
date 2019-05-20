@@ -53,6 +53,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\LevelManagement\Scripts\Menu.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\Menu\CreditsScreen.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\Menu\MainMenu.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\Menu\SettingsMenu.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\MenuManager.cs" />
      <Compile Include="Assets\Scripts\Blocker.cs" />
      <Compile Include="Assets\Scripts\Board.cs" />
      <Compile Include="Assets\Scripts\Board\BoardBomber.cs" />

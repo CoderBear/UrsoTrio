@@ -4,6 +4,8 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+using LevelManagement;
+
 // the GameManager is the master controller for the GamePlay
 
 [RequireComponent(typeof(LevelGoal))]
@@ -27,6 +29,8 @@ public class GameManager : Singleton<GameManager>
     // are we ready to load/reload a new level?
     bool m_isReadyToReload = false;
 
+    bool m_isReadyToLoadMainMenu = false;
+
     // reference to LevelGoal component
     LevelGoal m_levelGoal;
 
@@ -38,6 +42,7 @@ public class GameManager : Singleton<GameManager>
     // public reference to LevelGoalTimed component
     public LevelGoal LevelGoal { get { return m_levelGoal; } }
 
+    private int mainMenuIndex = 0;
 
     public override void Awake()
     {
@@ -272,15 +277,23 @@ public class GameManager : Singleton<GameManager>
         }  
 
         // wait until read to reload
-        while (!m_isReadyToReload)
+        while (!m_isReadyToReload || !m_isReadyToLoadMainMenu)
         {
             yield return null;
         }
 
         // reload the scene (you would customize this to go back to the menu or go to the next level
         // but we just reload the same scene in this demo
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if(m_isReadyToReload)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
 		
+        if(m_isReadyToLoadMainMenu)
+        {
+            MainMenu.Open();
+            SceneManager.LoadScene(mainMenuIndex);
+        }
     }
 
     void ShowWinScreen()
@@ -345,6 +358,11 @@ public class GameManager : Singleton<GameManager>
     public void ReloadScene()
     {
         m_isReadyToReload = true;
+    }
+
+    public void LoadMainMenu()
+    {
+        m_isReadyToLoadMainMenu = true;
     }
 
     // score points and play a sound

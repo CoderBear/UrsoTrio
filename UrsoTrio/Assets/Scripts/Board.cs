@@ -242,6 +242,7 @@ public class Board : MonoBehaviour
                     {
                         GameManager.Instance.UpdateMoves();
                     }
+                    isSwiping = false;
                 }
             }
         }
