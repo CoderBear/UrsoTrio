@@ -53,14 +53,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\LevelManagement\Scripts\Data\DataManager.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\Data\JsonSaver.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\Data\SaveData.cs" />
      <Compile Include="Assets\LevelManagement\Scripts\LevelLoader.cs" />
      <Compile Include="Assets\LevelManagement\Scripts\Menu.cs" />
-     <Compile Include="Assets\LevelManagement\Scripts\Menu\CreditsScreen.cs" />
-     <Compile Include="Assets\LevelManagement\Scripts\Menu\GameMenu.cs" />
-     <Compile Include="Assets\LevelManagement\Scripts\Menu\MainMenu.cs" />
-     <Compile Include="Assets\LevelManagement\Scripts\Menu\PauseMenu.cs" />
-     <Compile Include="Assets\LevelManagement\Scripts\Menu\SettingsMenu.cs" />
      <Compile Include="Assets\LevelManagement\Scripts\MenuManager.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\Menus\CreditsScreen.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\Menus\GameMenu.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\Menus\MainMenu.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\Menus\PauseMenu.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\Menus\SettingsMenu.cs" />
      <Compile Include="Assets\LevelManagement\Scripts\SplashScreen.cs" />
      <Compile Include="Assets\LevelManagement\Scripts\TransitionFader.cs" />
      <Compile Include="Assets\LevelManagement\Scripts\Utilities\DontDestroyOnLoad.cs" />
