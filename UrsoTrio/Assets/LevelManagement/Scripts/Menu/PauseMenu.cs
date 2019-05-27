@@ -27,14 +27,14 @@ namespace LevelManagement
         {
             Time.timeScale = 1;
             // Return to Main Menu
-            SceneManager.LoadScene(mainMenuIndex);
+            LevelLoader.LoadMainMenuLevel();
 
             MainMenu.Open();
         }
 
         public void OnSettingsPressed()
         {
-            // SettingsMenu.Open();
+            SettingsMenu.Open();
         }
     }
 }

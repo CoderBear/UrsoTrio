@@ -7,22 +7,33 @@ namespace LevelManagement
 {
     public class MainMenu : Menu<MainMenu>
     {
+        [SerializeField]
+        private float _playDelay = 0.5f;
+
+        [SerializeField]
+        private TransitionFader startTransitionPrefab;
+
         public void OnPlayPressed()
         {
-            // load primary game level buildIndex = 1
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            StartCoroutine(OnPlayPressedRoutine());
+        }
 
+        IEnumerator OnPlayPressedRoutine()
+        {
+            TransitionFader.PlayTransition(startTransitionPrefab);
+            LevelLoader.LoadNextLevel();
+            yield return new WaitForSeconds(_playDelay);
             GameMenu.Open();
         }
 
         public void OnSettingsPressed()
         {
-            // SettingsMenu.Open();
+            SettingsMenu.Open();
         }
 
         public void OnCreditsPressed()
         {
-            // CreditsScreen.Open();
+            CreditsScreen.Open();
         }
 
         public override void OnBackPressed()
