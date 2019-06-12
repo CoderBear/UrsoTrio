@@ -62,6 +62,7 @@
      <Compile Include="Assets\LevelManagement\Scripts\Menus\CreditsScreen.cs" />
      <Compile Include="Assets\LevelManagement\Scripts\Menus\GameMenu.cs" />
      <Compile Include="Assets\LevelManagement\Scripts\Menus\MainMenu.cs" />
+     <Compile Include="Assets\LevelManagement\Scripts\Menus\ModeSelectMenu.cs" />
      <Compile Include="Assets\LevelManagement\Scripts\Menus\PauseMenu.cs" />
      <Compile Include="Assets\LevelManagement\Scripts\Menus\SettingsMenu.cs" />
      <Compile Include="Assets\LevelManagement\Scripts\SplashScreen.cs" />

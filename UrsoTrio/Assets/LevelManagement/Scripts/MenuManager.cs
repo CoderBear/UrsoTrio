@@ -17,6 +17,8 @@ namespace LevelManagement
         private GameMenu gameMenuPrefab;
         [SerializeField]
         private PauseMenu pauseMenuPrefab;
+        [SerializeField]
+        private ModeSelectMenu modeSelectPrefab;
 
         [SerializeField]
         private Transform _menuParent;

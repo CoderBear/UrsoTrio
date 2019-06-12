@@ -7,8 +7,10 @@ namespace LevelManagement
 {
     public class LevelLoader : MonoBehaviour
     {
-      
+
         private static int mainMenuIndex = 1;
+        private static int collectedModeIndex = 3;
+        private static int timedModeIndex = 4;
 
 
         public static void LoadLevel(string levelName)
@@ -57,6 +59,16 @@ namespace LevelManagement
         public static void LoadMainMenuLevel()
         {
             LoadLevel(mainMenuIndex);
+        }
+
+        public static void LoadCollectModeLevel()
+        {
+            LoadLevel(collectedModeIndex);
+        }
+
+        public static void LoadTimedModeLevel()
+        {
+            LoadLevel(timedModeIndex);
         }
 
     }
